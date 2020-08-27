@@ -8,19 +8,19 @@ export default new Router({
   routes: [
     {
       path: "/",
-      alias: "/tutorials",
-      name: "tutorials",
-      component: () => import("./components/TutorialsList")
+      alias: "/acoes",
+      name: "acoes",
+      component: () => import("./components/AcoesList")
     },
     {
-      path: "/tutorials/:id",
-      name: "tutorial-details",
-      component: () => import("./components/Tutorial")
+      path: "/acoes/:id",
+      name: "acoes-detalhe",
+      component: () => import("./components/Acao")
     },
     {
-      path: "/add",
-      name: "add",
-      component: () => import("./components/AddTutorial")
+      path: "/adicionar",
+      name: "adicionar",
+      component: () => import("./components/AdicionarAcao")
     }
   ]
 });

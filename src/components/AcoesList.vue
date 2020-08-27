@@ -2,11 +2,11 @@
   <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by title"
-          v-model="title"/>
+        <input type="text" class="form-control" placeholder="Digite o ticker"
+          v-model="ticker"/>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"
-            @click="searchTitle"
+            @click="searchTicker"
           >
             Search
           </button>
@@ -14,68 +14,68 @@
       </div>
     </div>
     <div class="col-md-6">
-      <h4>Tutorials List</h4>
+      <h4>Lista de Ações</h4>
       <ul class="list-group">
         <li class="list-group-item"
           :class="{ active: index == currentIndex }"
-          v-for="(tutorial, index) in tutorials"
+          v-for="(acao, index) in acoes"
           :key="index"
-          @click="setActiveTutorial(tutorial, index)"
+          @click="setActiveAcao(acao, index)"
         >
-          {{ tutorial.title }}
+          {{ acao.ticker }}
         </li>
       </ul>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
+      <button class="m-3 btn btn-sm btn-danger" @click="removeAllAcoes">
         Remove All
       </button>
     </div>
     <div class="col-md-6">
-      <div v-if="currentTutorial">
-        <h4>Tutorial</h4>
+      <div v-if="currentAcao">
+        <h4>Acao</h4>
         <div>
-          <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+          <label><strong>Ticker:</strong></label> {{ currentAcao.ticker }}
         </div>
         <div>
-          <label><strong>Description:</strong></label> {{ currentTutorial.description }}
+          <label><strong>Empresa:</strong></label> {{ currentAcao.empresa }}
         </div>
         <div>
-          <label><strong>Status:</strong></label> {{ currentTutorial.published ? "Published" : "Pending" }}
+          <label><strong>Setor:</strong></label> {{ currentAcao.setor }}
         </div>
 
         <a class="badge badge-warning"
-          :href="'/tutorials/' + currentTutorial.id"
+          :href="'/acoes/' + currentAcao.id"
         >
           Edit
         </a>
       </div>
       <div v-else>
         <br />
-        <p>Please click on a Tutorial...</p>
+        <p>Please click on a Acao...</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TutorialDataService from "../services/TutorialDataService";
+import AcaoDataService from "../services/AcaoDataService";
 
 export default {
-  name: "tutorials-list",
+  name: "acoes-list",
   data() {
     return {
-      tutorials: [],
-      currentTutorial: null,
+      acoes: [],
+      currentAcao: null,
       currentIndex: -1,
       title: ""
     };
   },
   methods: {
-    retrieveTutorials() {
-      TutorialDataService.getAll()
+    retrieveAcoes() {
+      AcaoDataService.getAll()
         .then(response => {
-          this.tutorials = response.data;
-          console.log(response.data);
+          this.acoes = response.data;
+          //console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -83,18 +83,18 @@ export default {
     },
 
     refreshList() {
-      this.retrieveTutorials();
-      this.currentTutorial = null;
+      this.retrieveAcoes();
+      this.currentAcao = null;
       this.currentIndex = -1;
     },
 
-    setActiveTutorial(tutorial, index) {
-      this.currentTutorial = tutorial;
+    setActiveAcao(acao, index) {
+      this.currentAcao = acao;
       this.currentIndex = index;
     },
 
-    removeAllTutorials() {
-      TutorialDataService.deleteAll()
+    removeAllAcoes() {
+      AcaoDataService.deleteAll()
         .then(response => {
           console.log(response.data);
           this.refreshList();
@@ -104,10 +104,10 @@ export default {
         });
     },
     
-    searchTitle() {
-      TutorialDataService.findByTitle(this.title)
+    searchTicker() {
+      AcaoDataService.findByTicker(this.ticker)
         .then(response => {
-          this.tutorials = response.data;
+          this.acoes = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted() {
-    this.retrieveTutorials();
+    this.retrieveAcoes();
   }
 };
 </script>
